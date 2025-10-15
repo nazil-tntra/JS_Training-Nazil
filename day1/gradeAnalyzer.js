@@ -7,6 +7,7 @@ const students = [
 
 const analyzeGrades = (students) => {
 
+    /* Calculate Average */
     const scores = students?.map((v,i,arr)=>{
         return v.score;
     })
@@ -15,6 +16,29 @@ const analyzeGrades = (students) => {
 
     const average = calculateAverage(scores)
     console.log(`Average Score: ${average}`)
+
+
+    /* Calculate Max and Min Score */
+    let maxScore = -1;
+    let minScore = 999999;
+
+    let studentWithMaxScore = "";
+    let studentWithMinScore = "";
+
+    students.forEach((v)=>{
+        if(v.score > maxScore) {
+            maxScore = v.score;
+            studentWithMaxScore = v.name;
+        }
+
+        if(v.score < minScore) {
+            minScore = v.score;
+            studentWithMinScore = v.name;
+        }
+    })
+
+    console.log(`Highest Score: ${studentWithMaxScore} (${maxScore})`)
+    console.log(`Highest Score: ${studentWithMinScore} (${minScore})`)
 }
 
 
