@@ -1,117 +1,115 @@
 const students = [
-{ name: "Alice", score: 85 },
-{ name: "Bob", score: 92 },
-{ name: "Charlie", score: 58 },
-{ name: "David", score: 74 }
+  { name: "Alice", score: 85 },
+  { name: "Bob", score: 92 },
+  { name: "Charlie", score: 58 },
+  { name: "David", score: 74 },
 ];
 
 const analyzeGrades = (students) => {
 
-    /* Calculate Average */
-    const scores = students?.map((v,i,arr)=>{
-        return v.score;
-    })
+  /* Calculate Average */
+  const scores = students?.map((v, i, arr) => {
+    return v.score;
+  });
 
-    const average = calculateAverage(scores)
-    console.log(`Average Score: ${average}`)
-
-
-    /* Calculate Max and Min Score */
-    const { maxScore, minScore, studentWithMaxScore, studentWithMinScore} = getMaxMinScore(students);
-    console.log(`Highest Score: ${studentWithMaxScore} (${maxScore})`)
-    console.log(`Lowest Score: ${studentWithMinScore} (${minScore})`)
+  const average = calculateAverage(scores);
+  console.log(`Average Score: ${average}`);
 
 
-    /* Grade Distribution Logic */
-    const {gradeCountA, gradeCountB, gradeCountC, gradeCountD, gradeCountF} = getGradeDistribution(scores)
-    
-    console.log(`Grade Distribution: { A: ${gradeCountA}, B: ${gradeCountB}, C: ${gradeCountC}, D: ${gradeCountD}, F: ${gradeCountF} }`)
+  /* Calculate Max and Min Score */
+  const { maxScore, minScore, studentWithMaxScore, studentWithMinScore } =
+    getMaxMinScore(students);
+  console.log(`Highest Score: ${studentWithMaxScore} (${maxScore})`);
+  console.log(`Lowest Score: ${studentWithMinScore} (${minScore})`);
 
 
+  /* Grade Distribution Logic */
+  const gradeCount = getGradeDistribution(scores);
 
-    /* Students needing retake logic */
-    const failedStudents = getFailedStudents(students)
+  console.log("Grade Distribution:", gradeCount);
+  
 
-    console.log("Students needing retake:", failedStudents)
-}
+  /* Students needing retake logic */
+  const failedStudents = getFailedStudents(students);
 
+  console.log("Students needing retake:", failedStudents);
+};
 
 function getFailedStudents(students) {
-    const failedStudents = students.filter(student=>student.score < 60).map(student=>student.name)
+  const failedStudents = students
+    .filter((student) => student.score < 60)
+    .map((student) => student.name);
 
-    return failedStudents;
+  return failedStudents;
 }
 
-function getGradeDistribution(scores){
-    let gradeCountA = 0, gradeCountB = 0, gradeCountC = 0, gradeCountD = 0, gradeCountF = 0;
-    
-    for(let score of scores) {
-        
-        switch(true) {
-            case score >=90:
-                gradeCountA++;
-                break;
-                
-                case score >=80:
-                    gradeCountB++;
-                    break;
-                    
-            case score >=70:
-                gradeCountC++;
-                break;
+function getGradeDistribution(scores) {
+  let gradeCount = { A: 0, B: 0, C: 0, D: 0, F: 0 };
 
-            case score >=60:
-                gradeCountD++;
-                break;
+  for (let score of scores) {
+    switch (true) {
+      case score >= 90:
+        gradeCount.A++;
+        break;
 
-            case score <60:
-                gradeCountF++;
-                break;
+      case score >= 80:
+        gradeCount.B++;
+        break;
 
-            default:
-                console.log(`Invalid Score ${score}`)
-        }
+      case score >= 70:
+        gradeCount.C++;
+        break;
+
+      case score >= 60:
+        gradeCount.D++;
+        break;
+
+      case score < 60:
+        gradeCount.F++;
+        break;
+
+      default:
+        console.log(`Invalid Score ${score}`);
     }
+  }
 
-    return {gradeCountA, gradeCountB, gradeCountC, gradeCountD, gradeCountF};
+  return gradeCount;
 }
 
 function getMaxMinScore(students) {
-    let maxScore = -1;
-    let minScore = 999999;
-    
+  let maxScore = -1;
+  let minScore = 999999;
 
-    let studentWithMaxScore = "";
-    let studentWithMinScore = "";
+  let studentWithMaxScore = "";
+  let studentWithMinScore = "";
 
-    students.forEach((v)=>{
-        if(v.score > maxScore) {
-            maxScore = v.score;
-            studentWithMaxScore = v.name;
-        }
+  students.forEach((v) => {
+    if (v.score > maxScore) {
+      maxScore = v.score;
+      studentWithMaxScore = v.name;
+    }
 
-        if(v.score < minScore) {
-            minScore = v.score;
-            studentWithMinScore = v.name;
-        }
-    })
+    if (v.score < minScore) {
+      minScore = v.score;
+      studentWithMinScore = v.name;
+    }
+  });
 
-    return {maxScore, minScore, studentWithMaxScore, studentWithMinScore};
+  return { maxScore, minScore, studentWithMaxScore, studentWithMinScore };
 }
 
 function calculateAverage(values) {
-    let avg;
+  let avg;
 
-    if(values?.length) {
-        const totalSum = values.reduce((acc,num)=>{
-            return acc + num;
-        }, 0);
+  if (values?.length) {
+    const totalSum = values.reduce((acc, num) => {
+      return acc + num;
+    }, 0);
 
-        avg = totalSum / values.length;
-    }
+    avg = totalSum / values.length;
+  }
 
-    return avg;
+  return avg;
 }
 
-
-analyzeGrades(students)
+analyzeGrades(students);
