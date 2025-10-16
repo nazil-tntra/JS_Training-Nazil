@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary-skyblue-color: #1090cb;
+  --primary-background-color: #e8f4fa;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Nav bar */
+header {
+  padding: 25px 25px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo a {
+  text-decoration: none;
+  color: var(--primary-skyblue-color);
+  font-weight: 800;
+  font-size: x-large;
+}
+
+.navigations {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 70px;
+}
+
+.nav-links a:hover {
+  color: #0088cc;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black;
+}
+
+.active {
+  color: var(--primary-skyblue-color) !important;
+}
+
+.btn-primary {
+  background-color: var(--primary-skyblue-color);
+  border: none;
+  padding: 10px 22px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background-color: #23b2f4;  
+}
