@@ -27,3 +27,8 @@ The program is modular and organized into separate helper functions:
 -  ```getFailedStudents()``` → Filters students who failed.
 
 Finally, the main function ```analyzeGrades(students)``` combines all these operations and logs the results in the console.
+
+
+### Sample Output:
+
+<img src="./images/image.png">
