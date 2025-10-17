@@ -109,7 +109,8 @@ nav {
   padding: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  height: 350px;
+  min-height: 350px;
+  max-height: 550px;
 }
 
 .product-card:hover {
@@ -157,7 +158,7 @@ nav {
 }
 
 /* Add to Cart Button */
-.btn-cart {
+.add-to-cart-btn {
   background: #1f2937;
   color: #fff;
   border: none;
@@ -168,6 +169,6 @@ nav {
   transition: background 0.2s ease;
 }
 
-.btn-cart:hover {
+.add-to-cart-btn:hover {
   background: var(--primary-skyblue-color);
 }
