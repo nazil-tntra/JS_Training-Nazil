@@ -183,6 +183,11 @@ nav {
   background: var(--primary-skyblue-color);
 }
 
+.success-message {
+  color: green;
+  font-weight: bold;
+}
+
 /* Cart Calculation */
 #cart-table-container {
   margin-top: 50px;

@@ -4,12 +4,11 @@ let products = [];
 
 const cart = [];
 
-const fetchAllProducts = async() => {
-    const response = await fetch("https://fakestoreapi.com/products");
-    const data = await response.json();
-    return data;
+const fetchAllProducts = async () => {
+  const response = await fetch("https://fakestoreapi.com/products");
+  const data = await response.json();
+  return data;
 };
-
 
 const displayProducts = async () => {
   const productsData = await fetchAllProducts();
@@ -36,7 +35,7 @@ const displayProducts = async () => {
             <div class="rating">${product.rating.rate}</div>
             <p class="price">$${product.price}</p>
         </div>
-        <button class="add-to-cart-btn" id="${product.id}">Add to Cart</button>
+        <button class="add-to-cart-btn">Add to Cart</button>
     `;
 
     container.appendChild(productCard);
@@ -46,10 +45,24 @@ const displayProducts = async () => {
     btn.addEventListener("click", function () {
       // console.log(product)
       addToCart(product);
+
+      /* Success Message */
+      // const successMsgContainer = document.createElement("div")
+      // successMsgContainer.classList.add("success-msg-container")
+
+      const p = document.createElement("p")
+      p.classList.add("success-message")
+      productCard.appendChild(p)
+      p.textContent = "Product Added ✅"
+      // console.log(productCard.lastElementChild)
+    
+      const elemToRemove = productCard.lastElementChild;
+      setTimeout(()=>{
+        productCard.removeChild(elemToRemove)
+      },1000)
     });
   });
 };
-
 
 function addToCart(product) {
   const existingItem = cart.find((p) => p.id == product.id);
@@ -62,7 +75,17 @@ function addToCart(product) {
 
   localStorage.setItem("cart", JSON.stringify(cart));
 
-  console.log("Cart : ", cart);
+  /* const successMsgContainer = document.createElement("div")
+  successMsgContainer.classList.add("success-msg-container")
+
+  const p = document.createElement("p")
+  p.textContent = "Product Added ✅"
+  p.classList.add("success-message")
+  successMsgContainer.appendChild(p)
+
+  document.appendChild(successMsgContainer) */
+
+  // console.log("Cart : ", cart);
 
   cartCalculation();
 }
@@ -70,56 +93,36 @@ function addToCart(product) {
 function cartCalculation() {
   const cartData = JSON.parse(localStorage.getItem("cart")) || [];
 
-  /* if (cartData.length == 0) {
-    document.getElementById(
-      "cart-table-container"
-    ).innerHTML = `<p class="empty-cart">Your Cart is Empty!</p>`;
-    return;
-  } */
-
-  // const myLocalCart
   console.log("My Cart", cartData);
 
-  let totalPrice = 0;
-  if(cartData.length){
-    totalPrice = cartData.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0
-    );
-  }
-
-  let totalQuantity = 0;
+  let subTotal = 0,
+    totalQuantity = 0;
   cartData.forEach((product) => {
+    subTotal += product.price * product.quantity;
     totalQuantity += product.quantity;
   });
 
   const { totalDiscount, quantityDiscount, priceDiscount } = getDiscount(
     totalQuantity,
-    totalPrice
+    subTotal
   );
-  const finalTotal = getFinalTotal(totalPrice, totalDiscount);
+  const finalTotal = getFinalTotal(subTotal, totalDiscount);
 
-  displayCart(
-    cartData,
-    totalPrice,
-    quantityDiscount,
-    priceDiscount,
-    finalTotal
-  );
+  displayCart(cartData, subTotal, quantityDiscount, priceDiscount, finalTotal);
 }
 
-function getDiscount(totalQuantity, totalPrice) {
+function getDiscount(totalQuantity, actualPrice) {
   let quantityDiscount = 0;
   let priceDiscount = 0;
-  let subTotal = totalPrice;
+  let subTotal = actualPrice;
 
   if (totalQuantity > 10) {
-    quantityDiscount = totalPrice / 10;
+    quantityDiscount = actualPrice * 0.1;
     subTotal -= quantityDiscount;
   }
 
-  if (totalPrice > 500) {
-    priceDiscount = subTotal / 20;
+  if (actualPrice > 500) {
+    priceDiscount = subTotal * 0.05;
   }
 
   let totalDiscount = quantityDiscount + priceDiscount;
@@ -127,12 +130,11 @@ function getDiscount(totalQuantity, totalPrice) {
   return { totalDiscount, quantityDiscount, priceDiscount };
 }
 
-function getFinalTotal(totalPrice, discount) {
-  let finalTotal = totalPrice - discount;
+function getFinalTotal(subTotal, discount) {
+  let finalTotal = subTotal - discount;
 
   return finalTotal;
 }
-
 
 function displayCart(
   cartData,
@@ -146,10 +148,9 @@ function displayCart(
   console.log(`Price Discount (5%): -$${priceDiscount.toFixed(2)}`);
   console.log(`Final Total: $${finalTotal.toFixed(2)}`);
 
-  if (cartData.length) {
-    const table = document.getElementById("cart-table");
+  const table = document.getElementById("cart-table");
 
-    let tableHTML = `
+  let tableHTML = `
       <thead>
         <tr>
           <th></th>
@@ -159,8 +160,8 @@ function displayCart(
       <tbody>
   `;
 
-    // console.log("My Products", products)
-    /*  cartData.forEach((product)=>{
+  // console.log("My Products", products)
+  /*  cartData.forEach((product)=>{
      tableHTML += `
       <tr>
         <td>${product.title}</td>
@@ -171,7 +172,7 @@ function displayCart(
     `;
   }) */
 
-    tableHTML += `
+  tableHTML += `
       
         <tr>
           <td>Subtotal</td>
@@ -190,24 +191,22 @@ function displayCart(
 
   `;
 
-    table.innerHTML = tableHTML;
-  }
+  table.innerHTML = tableHTML;
 }
 
 async function main() {
-
   await displayProducts();
   cartCalculation();
 
-   const resetCartBtn = document.getElementById("reset-cart-btn");
+  const resetCartBtn = document.getElementById("reset-cart-btn");
 
   console.log(resetCartBtn);
 
   resetCartBtn.addEventListener("click", function () {
     localStorage.removeItem("cart");
 
-    displayCart();
-  }); 
+    displayCart([], 0, 0, 0, 0);
+  });
 }
 
 main();
