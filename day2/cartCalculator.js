@@ -47,24 +47,22 @@ const displayProducts = async () => {
       addToCart(product);
 
       /* Success Message */
-      // const successMsgContainer = document.createElement("div")
-      // successMsgContainer.classList.add("success-msg-container")
+      const p = document.createElement("p");
+      p.classList.add("success-message");
+      productCard.appendChild(p);
+      p.textContent = "Product Added ✅";
 
-      const p = document.createElement("p")
-      p.classList.add("success-message")
-      productCard.appendChild(p)
-      p.textContent = "Product Added ✅"
-      // console.log(productCard.lastElementChild)
-    
       const elemToRemove = productCard.lastElementChild;
-      setTimeout(()=>{
-        productCard.removeChild(elemToRemove)
-      },1000)
+      setTimeout(() => {
+        productCard.removeChild(elemToRemove);
+      }, 1000);
     });
   });
 };
 
 function addToCart(product) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
   const existingItem = cart.find((p) => p.id == product.id);
 
   if (existingItem) {
@@ -74,16 +72,6 @@ function addToCart(product) {
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
-
-  /* const successMsgContainer = document.createElement("div")
-  successMsgContainer.classList.add("success-msg-container")
-
-  const p = document.createElement("p")
-  p.textContent = "Product Added ✅"
-  p.classList.add("success-message")
-  successMsgContainer.appendChild(p)
-
-  document.appendChild(successMsgContainer) */
 
   // console.log("Cart : ", cart);
 
@@ -108,7 +96,14 @@ function cartCalculation() {
   );
   const finalTotal = getFinalTotal(subTotal, totalDiscount);
 
-  displayCart(cartData, subTotal, quantityDiscount, priceDiscount, finalTotal);
+  displayCart(
+    cartData,
+    totalQuantity,
+    subTotal,
+    quantityDiscount,
+    priceDiscount,
+    finalTotal
+  );
 }
 
 function getDiscount(totalQuantity, actualPrice) {
@@ -138,6 +133,7 @@ function getFinalTotal(subTotal, discount) {
 
 function displayCart(
   cartData,
+  totalQuantity,
   totalPrice,
   quantityDiscount,
   priceDiscount,
@@ -149,31 +145,10 @@ function displayCart(
   console.log(`Final Total: $${finalTotal.toFixed(2)}`);
 
   const table = document.getElementById("cart-table");
+  const cartProductContainer = document.getElementById("cart-products");
 
   let tableHTML = `
-      <thead>
-        <tr>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
       <tbody>
-  `;
-
-  // console.log("My Products", products)
-  /*  cartData.forEach((product)=>{
-     tableHTML += `
-      <tr>
-        <td>${product.title}</td>
-        <td>${product.price.toFixed(2)}</td>
-        <td>${product.quantity}</td>
-        <td>${(product.price * product.quantity).toFixed(2)}</td>
-      </tr>
-    `;
-  }) */
-
-  tableHTML += `
-      
         <tr>
           <td>Subtotal</td>
           <td>$${totalPrice.toFixed(2)}</td>
@@ -191,7 +166,74 @@ function displayCart(
 
   `;
 
+  let cartProductHTML = "";
+
+  cartData.forEach((product) => {
+    cartProductHTML += `
+      <ul>
+            <li>
+                <div class="cart-img">
+                    <img src=${product.image} alt=""
+                        style="width: 40px;">
+                </div>
+                <div class="cart-items">
+                    <div>
+                        <p>${product.title.slice(0, 5)}</p>
+                        <p>Qty: ${product.quantity}</p>
+                    </div>
+                    <div>
+                        <p>$ ${product.price}</p>
+                        <p class="x-icon" data-id="${
+                          product.id
+                        }"><i class="fa-solid fa-circle-xmark"></i></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        `;
+  });
+
+  if (cartData.length) {
+    cartProductHTML += `
+    <div class="cart-details">
+    <p>Total Items in Cart</p>
+    <p>${totalQuantity} Items</p>
+    </div>
+    
+    `;
+  }
+
+  cartProductContainer.innerHTML = cartProductHTML;
+
+  const deleteBtns = cartProductContainer.querySelectorAll(".x-icon");
+  // console.log(deleteBtns)
+
+  deleteBtns.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const productId = this.getAttribute("data-id");
+      console.log("Product Id to Delete", productId);
+      deleteFromCart(productId);
+    });
+  });
+
+  // deleteBtn.addEventListener("click",function() {
+  //   deleteFromCart(product);
+  // })
+
   table.innerHTML = tableHTML;
+}
+
+function deleteFromCart(productId) {
+  const cartData = JSON.parse(localStorage.getItem("cart"));
+  console.log(cartData);
+
+  const productIndex = cartData.findIndex((p) => p.id == productId);
+  // console.log("Found Index",productIndex)
+  cartData.splice(productIndex, 1);
+
+  localStorage.setItem("cart", JSON.stringify(cartData));
+  cartCalculation();
 }
 
 async function main() {
@@ -205,7 +247,7 @@ async function main() {
   resetCartBtn.addEventListener("click", function () {
     localStorage.removeItem("cart");
 
-    displayCart([], 0, 0, 0, 0);
+    displayCart([], 0, 0, 0, 0, 0);
   });
 }
 
