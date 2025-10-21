@@ -32,3 +32,30 @@ Finally, the main function ```analyzeGrades(students)``` combines all these oper
 ### Sample Output:
 
 <img src="./images/image.png">
+
+
+## Day 2
+
+### Shopping Cart App — Explanation
+
+This task is a Vanilla JavaScript-based Shopping Cart System that fetches product data from a Fake Store API, displays products dynamically, and provides complete cart functionality — including add/remove items, discounts, and cart reset.
+
+- ```fetchAllProducts()``` → Fetches all products from the Fake Store API.
+
+- ```displayProducts()``` → Dynamically displays all products on the webpage with title, price, image, and rating.
+
+- ```addToCart(product)``` → Adds a product to the cart or increases its quantity if it already exists.
+
+- ```cartCalculation()``` → Calculates subtotal, total quantity, discounts, and final total of the cart.
+
+- ```getDiscount(totalQuantity, actualPrice)``` → Applies 10% discount for >10 items and 5% discount if price > $500.
+
+- ```getFinalTotal(subTotal, discount)``` → Returns the final amount after applying discounts.
+
+- ```displayCart()``` → Displays all cart items, totals, discounts, and allows deleting items.
+
+- ```deleteFromCart(productId)``` → Removes a specific product from the cart and updates totals.
+
+- ```resetCart()``` → Clears all cart items and resets cart display.
+
+- ```main()``` → Initializes the app, loads products, calculates cart totals, and attaches event listeners.
