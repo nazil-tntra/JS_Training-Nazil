@@ -1,87 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Form | Js</title>
     <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-    <form id="userForm">
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" />
-            <p class="error"></p>
-        </div>
 
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" />
-            <p class="error"></p>
-        </div>
+<body class="light-theme">
 
-        <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="number" id="age">
-            <p class="error"></p>
-        </div>
-
-        <div class="form-group">
-            <label id="dob">Date of Birth:</label>
-            <input type="date" id="dob">
-            <p class="erro"></p>
-        </div>
-
-        <div class="form-group">
-            <label for="gender">Gender:</label>
-            <div>
-                <input type="radio" name="gender" value="male" id="male"> 
-                <label for="male">Male</label>
-
-                <input type="radio" name="gender" value="female" id="female"> 
-                <label for="female">Female</label>
-
-                <input type="radio" name="gender" value="other" id="other"> 
-                <label for="other">Other</label>
+    <div class="container" id="container">
+        <button id="theme-toggle">Switch to Dark Mode</button>
+        <form id="user-form">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" />
+                <p class="error" id="error-name"></p>
             </div>
-            <p class="error"></p>
-        </div>
 
-        <div class="form-group">
-            <label for="hobbies">Hobbies:</label>
-            <div>
-                <input type="checkbox" name="hobbies" id="reading">
-                <label for="reading">Reading</label>
-                
-                <input type="checkbox" name="hobbies" id="traveling">
-                <label for="traveling">Traveling</label>
-
-                <input type="checkbox" name="hobbies" id="coding">
-                <label for="coding">Coding</label>
-
-                <input type="checkbox" name="hobbies" id="music">
-                <label for="music">Music</label>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" />
+                <p class="error" id="error-email"></p>
             </div>
-            <p class="error"></p>
-        </div>
+
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" />
+                <p class="error" id="error-age"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" />
+                <p class="error" id="error-dob"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <div>
+                    <input type="radio" name="gender" value="male" id="male" />
+                    <label for="male">Male</label>
+
+                    <input type="radio" name="gender" value="female" id="female" />
+                    <label for="female">Female</label>
+
+                    <input type="radio" name="gender" value="other" id="other" />
+                    <label for="other">Other</label>
+                </div>
+                <p class="error" id="error-gender"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="hobbies">Hobbies:</label>
+                <div>
+                    <input type="checkbox" name="hobbies" value="reading" id="reading"/>
+                    <label for="reading">Reading</label>
+
+                    <input type="checkbox" name="hobbies" value="traveling" id="traveling"/>
+                    <label for="traveling">Traveling</label>
+
+                    <input type="checkbox" name="hobbies" value="coding" id="coding"/>
+                    <label for="coding">Coding</label>
+
+                    <input type="checkbox" name="hobbies" value="music" id="music"/>
+                    <label for="music">Music</label>
+                </div>
+                <p class="error" id="error-hobbies"></p>
+            </div>
 
 
-        <div class="form-group">
-            <label for="country">Country:</label>
-            <select id="country">
-                <option value="">--Select Country--</option>
-                <option value="India">India</option>
-                <option value="USA">USA</option>
-                <option value="UK">UK</option>
-                <option value="Japan">Japan</option>
-            </select>
-            <p class="error"></p>
-        </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <select id="country">
+                    <option value="">--Select Country--</option>
+                    <option value="India">India</option>
+                    <option value="USA">USA</option>
+                    <option value="UK">UK</option>
+                    <option value="Japan">Japan</option>
+                </select>
+                <p class="error" id="error-country"></p>
+            </div>
 
 
-        <button type="submit">Submit</button>
-    </form>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 
     <script src="./script.js"></script>
 </body>
+
 </html>

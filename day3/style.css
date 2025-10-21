@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+.light-theme{
+    background-color: white;
+    color: black;
+}
+
+
+.dark-theme {
+    background-color: #222;
+    color: white;
+}
+
