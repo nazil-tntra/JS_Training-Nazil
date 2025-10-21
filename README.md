@@ -59,3 +59,8 @@ This task is a Vanilla JavaScript-based Shopping Cart System that fetches produc
 - ```resetCart()``` → Clears all cart items and resets cart display.
 
 - ```main()``` → Initializes the app, loads products, calculates cart totals, and attaches event listeners.
+
+
+### Sample Output:
+
+<img src="./images/day2.png">
