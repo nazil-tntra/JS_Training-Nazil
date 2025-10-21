@@ -31,7 +31,7 @@ Finally, the main function ```analyzeGrades(students)``` combines all these oper
 
 ### Sample Output:
 
-<img src="./images/image.png">
+<img src="./images/day1.png">
 
 
 ## Day 2
