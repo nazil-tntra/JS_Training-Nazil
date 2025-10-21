@@ -1,19 +1,22 @@
+// Get reference to DOM Elements
 const container = document.getElementById("product-container");
+const resetCartBtn = document.getElementById("reset-cart-btn");
 
 let products = [];
-
 const cart = [];
 
+// Fetch All products from Fake API
 const fetchAllProducts = async () => {
   const response = await fetch("https://fakestoreapi.com/products");
   const data = await response.json();
   return data;
 };
 
+// Display Products on the page
 const displayProducts = async () => {
   const productsData = await fetchAllProducts();
-  // console.log(productsData);
 
+  // Extracting required data
   products = productsData.map((product) => {
     return {
       id: product.id,
@@ -40,10 +43,10 @@ const displayProducts = async () => {
 
     container.appendChild(productCard);
 
+    // Add to Cart Functionality
     const btn = productCard.querySelector(".add-to-cart-btn");
 
     btn.addEventListener("click", function () {
-      // console.log(product)
       addToCart(product);
 
       /* Success Message */
@@ -60,6 +63,7 @@ const displayProducts = async () => {
   });
 };
 
+// Add product to cart
 function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -73,18 +77,17 @@ function addToCart(product) {
 
   localStorage.setItem("cart", JSON.stringify(cart));
 
-  // console.log("Cart : ", cart);
-
+  // Updating cart Totals after adding a prdouct in a cart
   cartCalculation();
 }
 
+// Calculate cart totals, discount and display
 function cartCalculation() {
   const cartData = JSON.parse(localStorage.getItem("cart")) || [];
 
-  console.log("My Cart", cartData);
-
   let subTotal = 0,
     totalQuantity = 0;
+
   cartData.forEach((product) => {
     subTotal += product.price * product.quantity;
     totalQuantity += product.quantity;
@@ -94,8 +97,10 @@ function cartCalculation() {
     totalQuantity,
     subTotal
   );
+
   const finalTotal = getFinalTotal(subTotal, totalDiscount);
 
+  // Render updated cart details
   displayCart(
     cartData,
     totalQuantity,
@@ -106,6 +111,7 @@ function cartCalculation() {
   );
 }
 
+// Calculate discount
 function getDiscount(totalQuantity, actualPrice) {
   let quantityDiscount = 0;
   let priceDiscount = 0;
@@ -125,12 +131,14 @@ function getDiscount(totalQuantity, actualPrice) {
   return { totalDiscount, quantityDiscount, priceDiscount };
 }
 
+// Calculate Final Total after discounts
 function getFinalTotal(subTotal, discount) {
   let finalTotal = subTotal - discount;
 
   return finalTotal;
 }
 
+// Render cart summay and cart items
 function displayCart(
   cartData,
   totalQuantity,
@@ -147,25 +155,7 @@ function displayCart(
   const table = document.getElementById("cart-table");
   const cartProductContainer = document.getElementById("cart-products");
 
-  let tableHTML = `
-      <tbody>
-        <tr>
-          <td>Subtotal</td>
-          <td>$${totalPrice.toFixed(2)}</td>
-        </tr>
-        <tr><td>Quantity Discount (10%)</td><td>-$${quantityDiscount.toFixed(
-          2
-        )}</td></tr>
-        <tr><td>Price Discount (5%)</td><td>-$${priceDiscount.toFixed(
-          2
-        )}</td></tr>
-        <tr><td><strong>Final Total</strong></td><td><strong>$${finalTotal.toFixed(
-          2
-        )}</strong></td></tr>
-      </tbody>  
-
-  `;
-
+  // Display cart products / items
   let cartProductHTML = "";
 
   cartData.forEach((product) => {
@@ -189,25 +179,23 @@ function displayCart(
                     </div>
                 </div>
             </li>
-        </ul>
-
-        `;
+      </ul>
+      `;
   });
 
   if (cartData.length) {
     cartProductHTML += `
-    <div class="cart-details">
-    <p>Total Items in Cart</p>
-    <p>${totalQuantity} Items</p>
-    </div>
-    
+      <div class="cart-details">
+        <p>Total Items in Cart</p>
+        <p>${totalQuantity}  Items</p>
+      </div>
     `;
   }
 
   cartProductContainer.innerHTML = cartProductHTML;
 
+  // Attaching delete handlers - To remove items from cart
   const deleteBtns = cartProductContainer.querySelectorAll(".x-icon");
-  // console.log(deleteBtns)
 
   deleteBtns.forEach((btn) => {
     btn.addEventListener("click", function () {
@@ -217,38 +205,54 @@ function displayCart(
     });
   });
 
-  // deleteBtn.addEventListener("click",function() {
-  //   deleteFromCart(product);
-  // })
-
-  table.innerHTML = tableHTML;
+  // Display summary table
+  table.innerHTML = `
+      <tbody>
+        <tr>
+          <td>Subtotal</td>
+          <td>$${totalPrice.toFixed(2)}</td>
+        </tr>
+        <tr><td>Quantity Discount (10%)</td><td>-$${quantityDiscount.toFixed(
+          2
+        )}</td></tr>
+        <tr><td>Price Discount (5%)</td><td>-$${priceDiscount.toFixed(
+          2
+        )}</td></tr>
+        <tr><td><strong>Final Total</strong></td><td><strong>$${finalTotal.toFixed(
+          2
+        )}</strong></td></tr>
+      </tbody>  
+  `;
 }
 
+// Delete product from cart
 function deleteFromCart(productId) {
   const cartData = JSON.parse(localStorage.getItem("cart"));
-  console.log(cartData);
 
-  const productIndex = cartData.findIndex((p) => p.id == productId);
-  // console.log("Found Index",productIndex)
-  cartData.splice(productIndex, 1);
+  const updatedCart = cartData.filter((p) => p.id !== Number(productId));
 
-  localStorage.setItem("cart", JSON.stringify(cartData));
+  localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+  // Recalculate totals
   cartCalculation();
 }
 
+// Reset Cart
+function resetCart() {
+  localStorage.removeItem("cart");
+  displayCart([], 0, 0, 0, 0, 0);
+}
+
+
+// Main Entry function
 async function main() {
   await displayProducts();
   cartCalculation();
 
-  const resetCartBtn = document.getElementById("reset-cart-btn");
-
-  console.log(resetCartBtn);
-
-  resetCartBtn.addEventListener("click", function () {
-    localStorage.removeItem("cart");
-
-    displayCart([], 0, 0, 0, 0, 0);
-  });
+  // Add
+  resetCartBtn.addEventListener("click", resetCart);
 }
 
+
+// Initialize app
 main();
