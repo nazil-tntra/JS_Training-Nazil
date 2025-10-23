@@ -1,6 +1,9 @@
 const form = document.getElementById("user-form")
 const themeToggle = document.getElementById("theme-toggle")
 const body = document.body;
+const displayBox = document.getElementById("display-box")
+
+const allSubmissions = []
 
 themeToggle.addEventListener("click",()=>{
     body.classList.toggle("light-theme")
@@ -39,13 +42,10 @@ form.addEventListener("submit",(e)=>{
 
     let isValid = true;
     
-    if(name.length < 2) {
-        showError("name","Min 2 characters are required")
+    if(name.length < 2 || name.length > 50) {
+        showError("name","Name must be between 2 and 50 characters.")
         isValid = false;
-    }else if(name.length > 50) {
-        showError("name","Max 50 characters are allowed")
-        isValid = false;
-    } 
+    }
 
 
     if(!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
@@ -59,7 +59,7 @@ form.addEventListener("submit",(e)=>{
     if(age == "") {
         showError("age","Age is Required")
         isValid = false;
-    }else if(!isNaN(age)) {
+    }else if(isNaN(Number(age))) {
         showError("age","Only numbers are allowed")
         isValid = false;
     }else if(age < 1 || age > 120) {
@@ -75,8 +75,6 @@ form.addEventListener("submit",(e)=>{
         const today = new Date();
         const birtdate = new Date(dob);
 
-        // console.log(today)
-        // console.log(birtdate)
         if(birtdate > today) {
             showError("dob","Date of Birth cannot be in the future")
             isValid = false;
@@ -104,12 +102,26 @@ form.addEventListener("submit",(e)=>{
 
     if(!isValid) return;
 
+    const userData = {
+        name, 
+        email, 
+        age: Number(age),
+        dob,
+        gender: gender.value,
+        hobbies,
+        country
+    }
+
+    console.log("user Data => ",userData)
+
+    allSubmissions.push(userData)
+
+    displayBox.textContent = JSON.stringify(allSubmissions,null,4)
     
+    form.reset()
 })
 
 
 function showError(fieldId, message) {
     document.getElementById(`error-${fieldId}`).textContent = message;
 }
-
-// function handleSubmit
