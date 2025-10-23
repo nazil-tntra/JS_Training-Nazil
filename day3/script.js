@@ -11,7 +11,9 @@ const genderInput = document.getElementsByName("gender");
 const hobbiesInput = document.getElementsByName("hobbies");
 const countryInput = document.getElementById("country");
 
-const allSubmissions = [];
+const allSubmissions = JSON.parse(localStorage.getItem("allSubmissions")) || [];
+
+displayBox.textContent = JSON.stringify(allSubmissions,null,4)
 
 themeToggle.addEventListener("click", () => {
   body.classList.toggle("light-theme");
@@ -85,6 +87,8 @@ form.addEventListener("submit", (e) => {
   console.log("user Data => ", userData);
 
   allSubmissions.push(userData);
+
+  localStorage.setItem("allSubmissions",JSON.stringify(allSubmissions))
 
   displayBox.textContent = JSON.stringify(allSubmissions, null, 4);
 
