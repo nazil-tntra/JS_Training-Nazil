@@ -13,7 +13,52 @@ const countryInput = document.getElementById("country");
 
 const allSubmissions = JSON.parse(localStorage.getItem("allSubmissions")) || [];
 
-displayBox.textContent = JSON.stringify(allSubmissions,null,4)
+let editIndex = null;
+
+function renderJSON() {
+  displayBox.innerHTML = ""
+
+  allSubmissions.forEach((entry, index) => {
+    const div = document.createElement("div");
+
+    const pre = document.createElement("pre");
+    pre.textContent = JSON.stringify(entry, null, 4);
+
+    const pencilIcon = document.createElement("i");
+    pencilIcon.className = "fa-solid fa-pencil icon";
+
+    pencilIcon.addEventListener("click", () => loadFormForEdit(index));
+
+    div.appendChild(pre);
+    div.appendChild(pencilIcon);
+
+    displayBox.appendChild(div);
+  });
+}
+
+renderJSON()
+
+function loadFormForEdit(index) {
+  const data = allSubmissions[index];
+  editIndex = index;
+  console.log("Form Edit data", data);
+
+  document.getElementById("name").value = data.name;
+  document.getElementById("email").value = data.email;
+  document.getElementById("age").value = data.age;
+  document.getElementById("dob").value = data.dob;
+  document.getElementById("country").value = data.country;
+
+  form.querySelectorAll("input[name='gender']").forEach((g) => {
+    g.checked = data.gender == g.value;
+  });
+
+  form.querySelectorAll('input[name="hobbies"]').forEach((h) => {
+    h.checked = data.hobbies.includes(h.value);
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
 themeToggle.addEventListener("click", () => {
   body.classList.toggle("light-theme");
@@ -63,7 +108,7 @@ form.addEventListener("submit", (e) => {
   console.log("Hobbies : ", hobbies);
   console.log("Country : ", country);
 
-   const isValid =
+  const isValid =
     validateName() &
     validateEmail() &
     validateAge() &
@@ -86,13 +131,19 @@ form.addEventListener("submit", (e) => {
 
   console.log("user Data => ", userData);
 
-  allSubmissions.push(userData);
+  if (editIndex != null) {
+    allSubmissions[editIndex] = userData;
+    editIndex = null;
+  } else {
+    allSubmissions.push(userData);
+  }
 
-  localStorage.setItem("allSubmissions",JSON.stringify(allSubmissions))
+  localStorage.setItem("allSubmissions", JSON.stringify(allSubmissions));
 
-  displayBox.textContent = JSON.stringify(allSubmissions, null, 4);
+  renderJSON()
 
   form.reset();
+  window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"})
 });
 
 function validateName() {
@@ -103,19 +154,26 @@ function validateName() {
     return false;
   }
 
-  showError("name","")
+  showError("name", "");
   return true;
 }
 
 function validateEmail() {
   const email = emailInput.value.trim();
 
+  console.log("Email ", email);
+
+  if (!email) {
+    showError("email", "Email is required");
+    return false;
+  }
+
   if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
     showError("email", "Enter a valid Email: (ex: john.doe@example.com)");
     return false;
   }
 
-  showError("email","")
+  showError("email", "");
   return true;
 }
 
@@ -133,7 +191,7 @@ function validateAge() {
     return false;
   }
 
-  showError("age","")
+  showError("age", "");
   return true;
 }
 
@@ -153,7 +211,7 @@ function validateDOB() {
     }
   }
 
-  showError("dob","")
+  showError("dob", "");
   return true;
 }
 
@@ -166,7 +224,7 @@ function validateGender() {
     return false;
   }
 
-  showError("gender","")
+  showError("gender", "");
   return selected[0].value ? true : false;
 }
 
@@ -179,7 +237,7 @@ function validateHobbies() {
     return false;
   }
 
-  showError("hobbies","")
+  showError("hobbies", "");
   return selected ? true : false;
 }
 
@@ -191,7 +249,7 @@ function validateCountry() {
     return false;
   }
 
-  showError("country","")
+  showError("country", "");
   return true;
 }
 
