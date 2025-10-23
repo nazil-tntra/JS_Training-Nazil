@@ -9,63 +9,81 @@
 </head>
 
 <body class="light-theme">
+    <header>
+        <div>
+            <button id="theme-toggle">Switch to Dark Mode</button>
+        </div>
+    </header>
 
     <div class="container" id="container">
-        <button id="theme-toggle">Switch to Dark Mode</button>
         <form id="user-form">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" id="name" />
+                <input type="text" id="name" class="user-inputs" />
                 <p class="error" id="error-name"></p>
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" />
+                <input type="email" id="email" class="user-inputs" />
                 <p class="error" id="error-email"></p>
             </div>
 
             <div class="form-group">
                 <label for="age">Age:</label>
-                <input type="number" id="age" />
+                <input type="number" id="age" class="user-inputs" />
                 <p class="error" id="error-age"></p>
             </div>
 
             <div class="form-group">
                 <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" />
+                <input type="date" id="dob" class="user-inputs" />
                 <p class="error" id="error-dob"></p>
             </div>
 
             <div class="form-group">
                 <label for="gender">Gender:</label>
-                <div>
-                    <input type="radio" name="gender" value="male" id="male" />
-                    <label for="male">Male</label>
+                <div id="gender">
+                    <span>
+                        <input type="radio" name="gender" value="male" id="male" />
+                        <label for="male">Male</label>
+                    </span>
 
-                    <input type="radio" name="gender" value="female" id="female" />
-                    <label for="female">Female</label>
+                    <span>
+                        <input type="radio" name="gender" value="female" id="female" />
+                        <label for="female">Female</label>
+                    </span>
 
-                    <input type="radio" name="gender" value="other" id="other" />
-                    <label for="other">Other</label>
+                    <span>
+                        <input type="radio" name="gender" value="other" id="other" />
+                        <label for="other">Other</label>
+                    </span>
                 </div>
                 <p class="error" id="error-gender"></p>
             </div>
 
             <div class="form-group">
                 <label for="hobbies">Hobbies:</label>
-                <div>
-                    <input type="checkbox" name="hobbies" value="reading" id="reading"/>
-                    <label for="reading">Reading</label>
+                <div id="hobbies">
+                    <span>
+                        <input type="checkbox" name="hobbies" value="reading" id="reading" />
+                        <label for="reading">Reading</label>
+                    </span>
 
-                    <input type="checkbox" name="hobbies" value="traveling" id="traveling"/>
-                    <label for="traveling">Traveling</label>
+                    <span>
+                        <input type="checkbox" name="hobbies" value="traveling" id="traveling" />
+                        <label for="traveling">Traveling</label>
+                    </span>
 
-                    <input type="checkbox" name="hobbies" value="coding" id="coding"/>
-                    <label for="coding">Coding</label>
+                    <span>
+                        <input type="checkbox" name="hobbies" value="coding" id="coding" />
+                        <label for="coding">Coding</label>
+                    </span>
 
-                    <input type="checkbox" name="hobbies" value="music" id="music"/>
-                    <label for="music">Music</label>
+                    <span>
+                        <input type="checkbox" name="hobbies" value="music" id="music" />
+                        <label for="music">Music</label>
+                    </span>
                 </div>
                 <p class="error" id="error-hobbies"></p>
             </div>
