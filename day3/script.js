@@ -11,26 +11,32 @@ const genderInput = document.getElementsByName("gender");
 const hobbiesInput = document.getElementsByName("hobbies");
 const countryInput = document.getElementById("country");
 
-const allSubmissions = JSON.parse(localStorage.getItem("allSubmissions")) || [];
+const dataArray = JSON.parse(localStorage.getItem("dataArray")) || [];
 
 let editIndex = null;
 
 function renderJSON() {
   displayBox.innerHTML = ""
 
-  allSubmissions.forEach((entry, index) => {
+  document.querySelectorAll(".error").forEach((el) => (el.textContent = ""));
+
+  dataArray.forEach((entry, index) => {
     const div = document.createElement("div");
 
     const pre = document.createElement("pre");
     pre.textContent = JSON.stringify(entry, null, 4);
 
     const pencilIcon = document.createElement("i");
+    const trashIcon = document.createElement("i")
     pencilIcon.className = "fa-solid fa-pencil icon";
+    trashIcon.className = "fa-solid fa-trash icon"
 
     pencilIcon.addEventListener("click", () => loadFormForEdit(index));
+    trashIcon.addEventListener("click",()=> deleteFromList(index))
 
     div.appendChild(pre);
     div.appendChild(pencilIcon);
+    div.appendChild(trashIcon)
 
     displayBox.appendChild(div);
   });
@@ -38,8 +44,15 @@ function renderJSON() {
 
 renderJSON()
 
+function deleteFromList(index) {
+  dataArray.splice(index,1);
+
+  localStorage.setItem("dataArray",JSON.stringify(dataArray))
+  renderJSON()
+}
+
 function loadFormForEdit(index) {
-  const data = allSubmissions[index];
+  const data = dataArray[index];
   editIndex = index;
   console.log("Form Edit data", data);
 
@@ -119,7 +132,7 @@ form.addEventListener("submit", (e) => {
 
   if (!isValid) return;
 
-  const userData = {
+  const formData = {
     name,
     email,
     age: Number(age),
@@ -129,16 +142,27 @@ form.addEventListener("submit", (e) => {
     country,
   };
 
-  console.log("user Data => ", userData);
+  console.log("user Data => ", formData);
 
-  if (editIndex != null) {
-    allSubmissions[editIndex] = userData;
-    editIndex = null;
-  } else {
-    allSubmissions.push(userData);
+  const duplicate = dataArray.findIndex((entry,idx)=>entry.email.toLowerCase()==formData.email.toLowerCase() && idx != editIndex)
+
+  console.log("Duplicate ", duplicate)
+
+  if(duplicate != -1) {
+    showError("email","Email must be unique!");
+    return;
+  }else{
+    showError("email","")
   }
 
-  localStorage.setItem("allSubmissions", JSON.stringify(allSubmissions));
+  if (editIndex != null) {
+    dataArray[editIndex] = formData;
+    editIndex = null;
+  } else {
+    dataArray.push(formData);
+  }
+
+  localStorage.setItem("dataArray", JSON.stringify(dataArray));
 
   renderJSON()
 
