@@ -1,3 +1,4 @@
+// Get reference to DOM Elements
 const form = document.getElementById("user-form");
 const themeToggle = document.getElementById("theme-toggle");
 const body = document.body;
@@ -40,10 +41,14 @@ function renderJSON() {
 
     displayBox.appendChild(div);
   });
+
+  console.log(JSON.stringify(dataArray,null,4))
 }
 
 renderJSON()
 
+
+// Edit And Delete Functionality
 function deleteFromList(index) {
   dataArray.splice(index,1);
 
@@ -54,7 +59,6 @@ function deleteFromList(index) {
 function loadFormForEdit(index) {
   const data = dataArray[index];
   editIndex = index;
-  console.log("Form Edit data", data);
 
   document.getElementById("name").value = data.name;
   document.getElementById("email").value = data.email;
@@ -73,6 +77,8 @@ function loadFormForEdit(index) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+
+// Toggle Theme functionality
 themeToggle.addEventListener("click", () => {
   body.classList.toggle("light-theme");
   body.classList.toggle("dark-theme");
@@ -113,14 +119,6 @@ form.addEventListener("submit", (e) => {
   ).map((el) => el.value);
   const country = document.getElementById("country").value;
 
-  console.log("Name : ", name);
-  console.log("Email : ", email);
-  console.log("Age : ", age);
-  console.log("DOB : ", dob);
-  console.log("Gender : ", gender);
-  console.log("Hobbies : ", hobbies);
-  console.log("Country : ", country);
-
   const isValid =
     validateName() &
     validateEmail() &
@@ -142,11 +140,7 @@ form.addEventListener("submit", (e) => {
     country,
   };
 
-  console.log("user Data => ", formData);
-
   const duplicate = dataArray.findIndex((entry,idx)=>entry.email.toLowerCase()==formData.email.toLowerCase() && idx != editIndex)
-
-  console.log("Duplicate ", duplicate)
 
   if(duplicate != -1) {
     showError("email","Email must be unique!");
@@ -184,8 +178,6 @@ function validateName() {
 
 function validateEmail() {
   const email = emailInput.value.trim();
-
-  console.log("Email ", email);
 
   if (!email) {
     showError("email", "Email is required");

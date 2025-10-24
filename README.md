@@ -64,3 +64,27 @@ This task is a Vanilla JavaScript-based Shopping Cart System that fetches produc
 ### Sample Output:
 
 <img src="./images/day2.png">
+
+
+## Day 3
+
+### Dynamic Form  - Explanation
+
+This task is a Vanilla JavaScript-based Dynamic Form System that allows users to input, validate, edit, and delete form data. The data is stored in localStorage and displayed in formatted JSON with edit/delete options. It also includes light/dark theme toggle and real-time form validation for all fields.
+
+- ```renderJSON()``` → Displays all form data as formatted JSON with edit & delete icons.
+- ```deleteFromList(index)``` → Removes a record from localStorage and re-renders the list.
+- ```loadFormForEdit(index)``` → Loads selected data into form fields for editing.
+- ```themeToggle (Event)``` → Switches between light and dark themes dynamically.
+- ```form.addEventListener("submit")``` → Validates input, prevents duplicates, updates or adds new entry, saves to - localStorage.
+- ```validateName()``` → Checks if the name length is between 2–50 characters.
+- ```validateEmail()``` → Ensures a valid and unique email format.
+- ```validateAge()``` → Ensures age is numeric and between 1–120.
+- ```validateDOB()``` → Ensures the date of birth isn’t in the future.
+- ```validateGender()``` → Ensures a gender is selected.
+- ```validateHobbies()``` → Ensures at least one hobby is selected.
+- ```validateCountry()``` → Ensures a country is selected.
+- ```showError(fieldId, message)``` → Displays validation error messages beside respective fields.
+
+
+<img src="./images/day3.png" alt="Day3 task-output">
