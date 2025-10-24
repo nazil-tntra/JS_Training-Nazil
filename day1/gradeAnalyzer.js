@@ -8,7 +8,7 @@ const students = [
 const analyzeGrades = (students) => {
 
   /* Calculate Average */
-  const scores = students?.map((v, i, arr) => {
+  const scores = students.map((v, i, arr) => {
     return v.score;
   });
 

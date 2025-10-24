@@ -16,6 +16,36 @@ const dataArray = JSON.parse(localStorage.getItem("dataArray")) || [];
 
 let editIndex = null;
 
+const savedTheme = localStorage.getItem("theme")
+
+if(savedTheme) {
+  body.classList.add(savedTheme)
+  if(savedTheme == "light-theme") {
+    themeToggle.textContent = "Switch to Dark Mode"
+  }else{
+    themeToggle.textContent = "Switch to Light Mode"
+  }
+}else{
+  body.classList.add("light-theme")
+  localStorage.setItem("theme","light-theme")
+  themeToggle.textContent = "Switch to Dark Mode"
+}
+
+// Toggle Theme functionality
+themeToggle.addEventListener("click", () => {
+  body.classList.toggle("light-theme");
+  body.classList.toggle("dark-theme");
+
+  
+  if (body.classList.contains("light-theme")) {
+    themeToggle.textContent = "Switch to Dark Mode";
+    localStorage.setItem("theme","light-theme")
+  } else {
+    themeToggle.textContent = "Switch to Light Mode";
+    localStorage.setItem("theme","dark-theme")
+  }
+});
+
 function renderJSON() {
   displayBox.innerHTML = ""
 
@@ -76,19 +106,6 @@ function loadFormForEdit(index) {
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-
-// Toggle Theme functionality
-themeToggle.addEventListener("click", () => {
-  body.classList.toggle("light-theme");
-  body.classList.toggle("dark-theme");
-
-  if (body.classList.contains("light-theme")) {
-    themeToggle.textContent = "Switch to Dark Mode";
-  } else {
-    themeToggle.textContent = "Switch to Light Mode";
-  }
-});
 
 nameInput.addEventListener("input", validateName);
 emailInput.addEventListener("input", validateEmail);
